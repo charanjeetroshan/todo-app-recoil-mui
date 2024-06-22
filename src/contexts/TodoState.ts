@@ -5,3 +5,13 @@ export const todoState = atom<Todo[]>({
   key: "todoState",
   default: [],
 });
+
+export const todoEditingState = atom({
+  key: "editingState",
+  default: false,
+});
+
+export const todoToEditState = atom({
+  key: "todoToEditState",
+  default: "",
+});
