@@ -83,7 +83,13 @@ function AddTodo() {
 
   return (
     <form style={{ width: "100%" }} onSubmit={handleSubmitTodo}>
-      <StyledStack direction="row" justifyContent="center" flexWrap="wrap" rowGap={2}>
+      <StyledStack
+        direction="row"
+        alignItems="start"
+        justifyContent="center"
+        flexWrap="wrap"
+        rowGap={2}
+      >
         <StyledTextField
           type="text"
           label="Write a todo..."

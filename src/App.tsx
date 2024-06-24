@@ -1,5 +1,4 @@
 import { Container, Stack, Typography, styled } from "@mui/material";
-import "./App.css";
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
 
