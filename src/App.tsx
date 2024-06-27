@@ -1,26 +1,29 @@
-import { Container, Stack, Typography, styled } from "@mui/material";
-import AddTodo from "./components/AddTodo";
-import TodoList from "./components/TodoList";
-
-const StyledContainer = styled(Container)({
-  width: "100%",
-  maxWidth: "1280px",
-  paddingBlock: "2rem",
-  margin: "0 auto",
-  textAlign: "center",
-});
+import Navbar from "./components/ui/Navbar";
+import { StyledContainer } from "./components/shared/StyledContainer";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import { Toaster } from "react-hot-toast";
+import PrivateRoutes from "./utils/components/PrivateRoutes";
+import { Dashboard } from "@mui/icons-material";
 
 function App() {
   return (
-    <StyledContainer>
-      <Stack spacing={3}>
-        <Typography variant="h1" fontSize="3rem">
-          Todos App
-        </Typography>
-        <AddTodo />
-        <TodoList />
-      </Stack>
-    </StyledContainer>
+    <Router>
+      <Navbar />
+      <StyledContainer>
+        <Routes>
+          <Route element={<PrivateRoutes />}>
+            <Route element={<Dashboard />} path="/dashboard" />
+          </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/sign-up" element={<Signup />} />
+          <Route path="/log-in" element={<Login />} />
+        </Routes>
+      </StyledContainer>
+      <Toaster />
+    </Router>
   );
 }
 
