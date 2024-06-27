@@ -1,12 +1,25 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import { todoEditingState, todoState, todoToEditState } from "../contexts/TodoState";
+import { todoEditingState, todoState, todoToEditState } from "../../contexts/TodoState";
 import { useEffect, useRef, useState } from "react";
-import { Button, Stack, TextField, styled, useTheme } from "@mui/material";
+import {
+  Button,
+  Stack,
+  TextField,
+  outlinedInputClasses,
+  styled,
+  useTheme,
+} from "@mui/material";
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   width: "80%",
   [`${theme.breakpoints.down("md")}`]: {
     width: "100%",
+  },
+  [`${theme.breakpoints.up("md")}`]: {
+    [`& .${outlinedInputClasses.notchedOutline}`]: {
+      borderTopRightRadius: 0,
+      borderBottomRightRadius: 0,
+    },
   },
 }));
 
@@ -95,7 +108,7 @@ function AddTodo() {
           label="Write a todo..."
           variant="outlined"
           error={error}
-          color={error ? "error" : "primary"}
+          color={error ? "error" : "info"}
           helperText={error && "Empty input!"}
           value={isEditing ? editTodo : todo}
           onChange={(e) =>
@@ -107,7 +120,7 @@ function AddTodo() {
         <Button
           type="submit"
           variant="contained"
-          color="primary"
+          color="info"
           sx={{
             padding: "1rem 3rem",
             [`${theme.breakpoints.up("md")}`]: {

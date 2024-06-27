@@ -1,5 +1,5 @@
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { todoEditingState, todoState, todoToEditState } from "../contexts/TodoState";
+import { todoEditingState, todoState, todoToEditState } from "../../contexts/TodoState";
 import {
   Checkbox,
   CircularProgress,
@@ -17,10 +17,10 @@ import {
   tooltipClasses,
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import { Todo } from "../types";
+import { Todo } from "../../types";
 
 const StyledCheckbox = styled(Checkbox)(({ theme }) => ({
-  color: theme.palette.primary.main,
+  color: theme.palette.info.main,
 }));
 
 const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -70,7 +70,7 @@ function TodoList() {
   return (
     <List>
       {!todos.length ? (
-        <CircularProgress />
+        <CircularProgress color="info" />
       ) : todos.length ? (
         todos.map((todo) => (
           <Stack key={todo.id} direction="row" alignItems="center">
@@ -85,7 +85,7 @@ function TodoList() {
                 }}
               >
                 <ListItemIcon>
-                  <StyledCheckbox checked={todo.isCompleted} />
+                  <StyledCheckbox checked={todo.isCompleted} color="info" />
                 </ListItemIcon>
                 <ListItemText primary={todo.title} />
               </ListItemButton>
