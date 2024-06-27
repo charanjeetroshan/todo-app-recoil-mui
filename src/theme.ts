@@ -2,30 +2,32 @@ import { createTheme, formLabelClasses, outlinedInputClasses } from "@mui/materi
 import tinycolor from "tinycolor2";
 
 const theme = createTheme({
+  palette: {
+    info: {
+      main: "#008080",
+      contrastText: "#f5f5f5",
+    },
+  },
   components: {
     MuiTextField: {
       styleOverrides: {
         root: ({ theme, ownerState }) => ({
-          ...(ownerState.color === "primary" && {
+          ...(ownerState.color === "info" && {
             [`& .${formLabelClasses.root}`]: {
-              color: theme.palette.primary.main,
+              color: theme.palette.info.main,
             },
 
             [`& .${outlinedInputClasses.notchedOutline}`]: {
-              borderColor: theme.palette.primary.main,
-              [`${theme.breakpoints.up("md")}`]: {
-                borderTopRightRadius: 0,
-                borderBottomRightRadius: 0,
-              },
+              borderColor: theme.palette.info.main,
             },
             [`&:hover .${outlinedInputClasses.root} .${outlinedInputClasses.notchedOutline}`]:
               {
-                borderColor: tinycolor(theme.palette.primary.main).darken().toHexString(),
+                borderColor: tinycolor(theme.palette.info.main).darken(5).toHexString(),
               },
-            input: {
-              color: theme.palette.primary.contrastText,
-            },
           }),
+          input: {
+            color: theme.palette.info.contrastText,
+          },
         }),
       },
     },
