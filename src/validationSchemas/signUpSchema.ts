@@ -11,5 +11,8 @@ export const signUpSchema = z.object({
   password: z
     .string({ message: "Password is a required field." })
     .min(6, { message: "The password needs to be at least 6 characters long." }),
-  avatar: z.object({}).optional(),
+  avatar: z
+    .custom<File>()
+    .transform((file) => !file)
+    .refine((file) => !file, { message: "A file must be uploaded before submitting." }),
 });
