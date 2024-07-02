@@ -4,7 +4,7 @@ export type Todo = {
   isCompleted: boolean;
 };
 
-export type User = {
+export type SignUpUserType = {
   fullName: string;
   email: string;
   username: string;
@@ -12,9 +12,28 @@ export type User = {
   avatar: File | undefined;
 };
 
+export type LoginUserType = {
+  username: string;
+  email: string;
+  password: string;
+};
+
 export type APIResponse = {
   statusCode: number;
-  data: User[] | null;
+  data?: LoggedInUser;
   message: string;
   success: boolean;
+  errors?: [];
+};
+
+export type LoggedInUser = {
+  user?: {
+    username: string;
+    email: string;
+    fullName: string;
+    avatar: string;
+    coverImage: string;
+  };
+  accessToken?: string;
+  refreshToken?: string;
 };
