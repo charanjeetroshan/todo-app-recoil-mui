@@ -15,3 +15,8 @@ export const todoToEditState = atom({
   key: "todoToEditState",
   default: "",
 });
+
+export const isTodoListLoading = atom({
+  key: "isTodoListLoading",
+  default: false,
+});

@@ -1,5 +1,10 @@
-import { useRecoilState, useRecoilValue } from "recoil";
-import { todoEditingState, todoState, todoToEditState } from "../../contexts/TodoState";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  isTodoListLoading,
+  todoEditingState,
+  todoState,
+  todoToEditState,
+} from "../../contexts/TodoState";
 import { useEffect, useRef, useState } from "react";
 import {
   Button,
@@ -36,6 +41,7 @@ function AddTodo() {
   const [todos, setTodos] = useRecoilState(todoState);
   const [isEditing, setIsEditing] = useRecoilState(todoEditingState);
   const todoToEdit = useRecoilValue(todoToEditState);
+  const setIsTodoListLoading = useSetRecoilState(isTodoListLoading);
   const [editTodo, setEditTodo] = useState("");
   const textFieldRef: React.Ref<HTMLInputElement> = useRef(null);
   const theme = useTheme();
@@ -66,8 +72,8 @@ function AddTodo() {
         setTodos(newTodos);
         setEditTodo("");
         setIsEditing(false);
-        return;
       }
+      return;
     }
 
     if (!todo) {
@@ -82,13 +88,15 @@ function AddTodo() {
   };
 
   useEffect(() => {
-    const todosFromLocalStorage = JSON.parse(localStorage.getItem("todos") ?? "[{}]");
+    const todosFromLocalStorage = JSON.parse(localStorage.getItem("todos") ?? "{}");
     if (Array.isArray(todosFromLocalStorage) && todosFromLocalStorage.length) {
+      setIsTodoListLoading(true);
+      setTodos(todosFromLocalStorage);
       setTimeout(() => {
-        setTodos(todosFromLocalStorage);
+        setIsTodoListLoading(false);
       }, 1500);
     }
-  }, [setTodos]);
+  }, [setTodos, setIsTodoListLoading]);
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));

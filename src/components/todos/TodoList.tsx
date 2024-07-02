@@ -1,5 +1,10 @@
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { todoEditingState, todoState, todoToEditState } from "../../contexts/TodoState";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  isTodoListLoading,
+  todoEditingState,
+  todoState,
+  todoToEditState,
+} from "../../contexts/TodoState";
 import {
   Checkbox,
   CircularProgress,
@@ -39,6 +44,7 @@ function TodoList() {
   const [todos, setTodos] = useRecoilState(todoState);
   const setIsEditing = useSetRecoilState(todoEditingState);
   const setTodoToEdit = useSetRecoilState(todoToEditState);
+  const isLoading = useRecoilValue(isTodoListLoading);
 
   const toggleTodo = (todoId: string) => {
     const foundTodo = todos.find((todo) => todo.id === todoId);
@@ -69,7 +75,7 @@ function TodoList() {
 
   return (
     <List>
-      {!todos.length ? (
+      {isLoading ? (
         <CircularProgress color="info" />
       ) : todos.length ? (
         todos.map((todo) => (
