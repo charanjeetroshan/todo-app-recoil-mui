@@ -1,19 +1,31 @@
-import { Button, Stack, TextField, Typography, styled } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Stack,
+  TextField,
+  Typography,
+  styled,
+  useTheme,
+} from "@mui/material";
 import { StyledContainer } from "../components/shared/StyledContainer";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { signUpSchema } from "../validationSchemas/signUpSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { registerUser } from "../utils/API";
 import toast from "react-hot-toast";
 import { Navigate } from "react-router-dom";
 import { useState } from "react";
+import FileInput from "../components/ui/FileInput";
+import useAuthActions from "../hooks/useAuthActions";
 
 const StyledTextField = styled(TextField)({
   width: "100%",
 });
 
 function Signup() {
+  const theme = useTheme();
+  const { registerUser, isLoading } = useAuthActions();
+
   const [registerationSuccessful, setRegistrationSuccessful] = useState(false);
   const [image, setImage] = useState<File>();
 
@@ -57,10 +69,14 @@ function Signup() {
     return <Navigate to="/log-in" replace />;
   }
 
+  if (isLoading) {
+    return <CircularProgress color="inherit" />;
+  }
+
   return (
     <StyledContainer>
       <Typography variant="h1" fontSize="3.5rem" mb={4}>
-        Sign up for the todos app
+        Sign up for the todo's app
       </Typography>
       <form onSubmit={form.handleSubmit(handleSignUp)}>
         <Stack spacing={2} alignItems="center" width="100%">
@@ -134,21 +150,26 @@ function Signup() {
             name="avatar"
             control={form.control}
             render={({ field: { onChange, ...field } }) => (
-              <StyledTextField
-                id="fileInput"
-                type="file"
-                variant="outlined"
-                color={formErrors.avatar?.message ? "error" : "info"}
-                error={!!formErrors.avatar?.message}
-                helperText={formErrors.avatar?.message}
-                {...field}
-                inputProps={{}}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  onChange(setImage((e.target.files as FileList)[0]));
-                }}
-              />
+              <>
+                <FileInput
+                  label="Browse files to upload"
+                  acceptedFileTypes={["image/*"]}
+                  borderColor={formErrors.avatar ? "#d32" : theme.palette.info.main}
+                  error={!!formErrors.avatar}
+                  color={formErrors.avatar ? "error" : "info"}
+                  {...field}
+                  onChange={(e) => {
+                    setImage((e.target.files as FileList)[0]);
+                    onChange(e);
+                  }}
+                />
+                {formErrors.avatar && (
+                  <p className="text-[#d32f2f]">{formErrors.avatar.message}</p>
+                )}
+              </>
             )}
           />
+
           <Button
             type="submit"
             variant="contained"
