@@ -5,11 +5,10 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import { Toaster } from "react-hot-toast";
-import PrivateRoutes from "./utils/components/PrivateRoutes";
 import { Dashboard } from "@mui/icons-material";
-import PublicRoutes from "./utils/components/PublicRoutes";
 import { useLayoutEffect } from "react";
 import useAuthActions from "./hooks/useAuthActions";
+import SpecialRoutes from "./utils/components/SpecialRoutes";
 
 function App() {
   const { refreshAccessToken } = useAuthActions();
@@ -23,10 +22,10 @@ function App() {
       <Navbar />
       <StyledContainer>
         <Routes>
-          <Route element={<PrivateRoutes />}>
+          <Route element={<SpecialRoutes type="PRIVATE" />}>
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>
-          <Route element={<PublicRoutes />}>
+          <Route element={<SpecialRoutes type="PUBLIC" />}>
             <Route path="/sign-up" element={<Signup />} />
             <Route path="/log-in" element={<Login />} />
           </Route>
