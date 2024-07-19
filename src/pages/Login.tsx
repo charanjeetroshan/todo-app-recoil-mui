@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { loginSchema } from "../validationSchemas/loginSchema";
+import { emailValidationRegExp, loginSchema } from "../validationSchemas/loginSchema";
 import { z } from "zod";
 import toast from "react-hot-toast";
 import { Navigate } from "react-router-dom";
@@ -15,8 +15,6 @@ function Login() {
   const [currentUser, setCurrentUser] = useRecoilState(currentUserStateAtom);
   const {
     handleSubmit,
-    watch,
-    register,
     control,
     formState: { errors: formErrors },
   } = useForm<z.infer<typeof loginSchema>>({
@@ -28,13 +26,18 @@ function Login() {
   });
   const { loginUser, isLoading } = useAuthActions();
 
-  const credentials = watch("credentials");
-
   const handleLogin: SubmitHandler<z.infer<typeof loginSchema>> = async (data) => {
+    const email = emailValidationRegExp.test(data.credentials)
+      ? data.credentials
+      : undefined;
+    const username = !emailValidationRegExp.test(data.credentials)
+      ? data.credentials
+      : undefined;
+
     const { response, errors } = await loginUser({
       ...data,
-      email: credentials,
-      username: credentials,
+      username,
+      email,
     });
 
     if (response?.data.success) {
@@ -73,7 +76,6 @@ function Login() {
             control={control}
             render={({ field }) => (
               <TextField
-                {...register("credentials")}
                 type="text"
                 variant="outlined"
                 color={formErrors.credentials ? "error" : "info"}
@@ -81,7 +83,6 @@ function Login() {
                 error={!!formErrors.credentials?.message}
                 helperText={formErrors.credentials?.message}
                 {...field}
-                value={credentials}
               />
             )}
           />
@@ -104,8 +105,7 @@ function Login() {
             type="submit"
             variant="contained"
             color="info"
-            sx={{ padding: "0.8rem 3rem" }}
-          >
+            sx={{ padding: "0.8rem 3rem" }}>
             Login
           </Button>
         </Stack>

@@ -12,11 +12,15 @@ export type SignUpUserType = {
   avatar: File | undefined;
 };
 
-export type LoginUserType = {
-  username: string;
-  email: string;
-  password: string;
-};
+export type LoginUserType =
+  | {
+      username: string | undefined;
+      password: string;
+    }
+  | {
+      email: string | undefined;
+      password: string;
+    };
 
 export type APIResponse = {
   statusCode: number;
