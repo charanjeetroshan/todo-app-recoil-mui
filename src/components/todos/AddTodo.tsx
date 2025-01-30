@@ -110,7 +110,7 @@ function AddTodo() {
         justifyContent="center"
         flexWrap="wrap"
         rowGap={2}
-      >
+        mb={4}>
         <StyledTextField
           type="text"
           label="Write a todo..."
@@ -135,8 +135,7 @@ function AddTodo() {
               borderTopLeftRadius: 0,
               borderBottomLeftRadius: 0,
             },
-          }}
-        >
+          }}>
           {isEditing ? "Save Todo" : "Add Todo"}
         </Button>
       </StyledStack>

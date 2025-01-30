@@ -50,7 +50,7 @@ function Navbar() {
 
   const handleLinkClick = () => {
     if (currentUser.accessToken) {
-      toast("Already logged in.", {
+      toast.success("Already logged in.", {
         position: "bottom-center",
         style: { textAlign: "center", width: "380px", maxWidth: "100%" },
       });
@@ -58,10 +58,7 @@ function Navbar() {
   };
 
   return (
-    <AppBar
-      position="sticky"
-      sx={{ backgroundColor: tinycolor(theme.palette.info.main).darken(5).toHexString() }}
-    >
+    <AppBar position="sticky" sx={{ backgroundColor: theme.palette.info.main }}>
       <StyledContainer sx={{ padding: "1rem" }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Link to="/">
@@ -72,13 +69,12 @@ function Navbar() {
                 fontSize: "1.3rem",
                 fontWeight: 800,
                 color: "whitesmoke",
-              }}
-            >
+              }}>
               TodoApp
             </Button>
           </Link>
           {isLoading ? (
-            <CircularProgress color="inherit" />
+            <CircularProgress color="inherit" size="6" />
           ) : (
             currentUser.user?.fullName && (
               <Typography variant="h6" gutterBottom>

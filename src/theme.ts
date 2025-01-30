@@ -1,11 +1,17 @@
-import { createTheme, formLabelClasses, outlinedInputClasses } from "@mui/material";
+import {
+  createTheme,
+  formLabelClasses,
+  inputBaseClasses,
+  outlinedInputClasses,
+  selectClasses,
+} from "@mui/material";
 import tinycolor from "tinycolor2";
 
 const theme = createTheme({
   palette: {
     info: {
-      main: "#008080",
-      contrastText: "#f5f5f5",
+      main: "#549",
+      contrastText: "#ddd",
     },
   },
   components: {
@@ -14,9 +20,11 @@ const theme = createTheme({
         root: ({ theme, ownerState }) => ({
           ...(ownerState.color === "info" && {
             [`& .${formLabelClasses.root}`]: {
-              color: theme.palette.info.main,
+              color: theme.palette.info.contrastText,
             },
-
+            [`& .${formLabelClasses.root}.${formLabelClasses.focused}`]: {
+              color: theme.palette.info.contrastText,
+            },
             [`& .${outlinedInputClasses.notchedOutline}`]: {
               borderColor: theme.palette.info.main,
             },
@@ -27,6 +35,39 @@ const theme = createTheme({
           }),
           input: {
             color: theme.palette.info.contrastText,
+          },
+        }),
+      },
+    },
+    // The following is not tested
+    MuiSelect: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          [`& .${selectClasses.icon}`]: {
+            fill: theme.palette.info.contrastText,
+          },
+          [`& .${selectClasses.select}`]: {
+            color: "white",
+          },
+          "&:hover": {
+            [`.${outlinedInputClasses.notchedOutline}`]: {
+              borderColor: "white",
+            },
+          },
+          [`&.${inputBaseClasses.focused} .${outlinedInputClasses.notchedOutline}`]: {
+            borderColor: theme.palette.info.main,
+          },
+          [`&.${inputBaseClasses.focused} .${selectClasses.outlined}`]: {
+            color: theme.palette.info.contrastText,
+          },
+          [`&.${inputBaseClasses.focused} .${selectClasses.icon}`]: {
+            fill: theme.palette.info.contrastText,
+          },
+          [`&.${inputBaseClasses.focused} .${selectClasses.select}`]: {
+            outline: "none",
+          },
+          fieldset: {
+            borderColor: "white",
           },
         }),
       },

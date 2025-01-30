@@ -6,16 +6,14 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import { Toaster } from "react-hot-toast";
 import { Dashboard } from "@mui/icons-material";
-import { useLayoutEffect } from "react";
 import useAuthActions from "./hooks/useAuthActions";
 import SpecialRoutes from "./utils/components/SpecialRoutes";
+import { useDebouncedEffect } from "./hooks/useDebounceEffect";
 
 function App() {
   const { refreshAccessToken } = useAuthActions();
 
-  useLayoutEffect(() => {
-    refreshAccessToken();
-  }, [refreshAccessToken]);
+  useDebouncedEffect(refreshAccessToken, 500);
 
   return (
     <Router>

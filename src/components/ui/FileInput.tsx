@@ -1,6 +1,6 @@
 import { Close, UploadFileOutlined } from "@mui/icons-material";
 import { Stack } from "@mui/material";
-import React, { forwardRef, useRef, useState } from "react";
+import React, { forwardRef, useLayoutEffect, useRef, useState } from "react";
 
 type AcceptedFileTypes = "image/*" | "image/jpg" | "image/jpeg" | "image/png";
 
@@ -22,21 +22,27 @@ type FileInputProps = {
   error: boolean;
 };
 
+const NO_FILES_CHOOSEN = "No file choosen yet";
+
 export default forwardRef(function FileInput(
   { label, borderColor, color, acceptedFileTypes, onChange, error }: FileInputProps,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _ref
 ) {
   const acceptedFiles = acceptedFileTypes.map((fileType) => fileType).join(",");
 
   const [image, setImage] = useState("");
-  const [fileName, setFileName] = useState("No file choosen yet");
+  const [fileName, setFileName] = useState(NO_FILES_CHOOSEN);
   const [parentDivDragClass, setParentDivDragClass] = useState("");
 
   const fileInputRef: React.LegacyRef<HTMLInputElement> | undefined = useRef(null);
   const imageContainerRef: React.LegacyRef<HTMLDivElement> | undefined = useRef(null);
   const parentContainerRef: React.LegacyRef<HTMLDivElement> | undefined = useRef(null);
   const fileUploadStackRef: React.LegacyRef<HTMLDivElement> | undefined = useRef(null);
+
+  useLayoutEffect(() => {
+    parentContainerRef.current &&
+      (parentContainerRef.current.style.borderColor = borderColor);
+  }, [borderColor]);
 
   const handleParentDivClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (
@@ -53,7 +59,7 @@ export default forwardRef(function FileInput(
       setFileName(files[0].name);
       setImage(URL.createObjectURL(files[0]));
     } else {
-      setFileName("");
+      setFileName(NO_FILES_CHOOSEN);
       setImage("");
       e.target.value = "";
     }
@@ -64,7 +70,7 @@ export default forwardRef(function FileInput(
   };
 
   const removeSelectedImage = () => {
-    setFileName("");
+    setFileName(NO_FILES_CHOOSEN);
     setImage("");
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -111,47 +117,48 @@ export default forwardRef(function FileInput(
   };
 
   return (
-    <div
-      className={`border-2 border-[${borderColor}] rounded-md border-dashed w-full h-[300px] flex flex-col items-center justify-center cursor-pointer ${parentDivDragClass}`}
-      ref={parentContainerRef}
-      onClick={handleParentDivClick}
-      onDragEnter={handleParentDivDragEnter}
-      onDragOver={handleParentDivDragOver}
-      onDragLeave={handleParentDivDragLeave}
-      onDrop={handleParentDivDrop}
-    >
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept={acceptedFiles}
-        onChange={handleInputChange}
-        hidden
-      />
-      {image ? (
-        <div className="relative z-0" ref={imageContainerRef}>
-          <img src={image} alt={fileName} width={250} height={250} />
-          <Close
-            className="absolute z-10 top-[-12px] right-[-12px] rounded-full bg-slate-950"
-            fontSize="medium"
-            color="error"
-            onClick={removeSelectedImage}
-          />
-        </div>
-      ) : (
-        <Stack
-          spacing={1.5}
-          alignItems="center"
-          justifyContent="center"
-          ref={fileUploadStackRef}
-        >
-          <UploadFileOutlined
-            className="fill-purple-600"
-            color={parentDivDragClass ? "inherit" : color}
-            fontSize="large"
-          />
-          <p className={`text-[${error && "#d32f2f"}]`}>{label}</p>
-        </Stack>
-      )}
-    </div>
+    <>
+      <div
+        className={`border-2 rounded-md border-dashed w-full h-[250px] flex flex-col items-center justify-center cursor-pointer ${parentDivDragClass}`}
+        ref={parentContainerRef}
+        onClick={handleParentDivClick}
+        onDragEnter={handleParentDivDragEnter}
+        onDragOver={handleParentDivDragOver}
+        onDragLeave={handleParentDivDragLeave}
+        onDrop={handleParentDivDrop}>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept={acceptedFiles}
+          onChange={handleInputChange}
+          hidden
+        />
+        {image ? (
+          <div className="relative z-0 h-full py-2" ref={imageContainerRef}>
+            <img className="h-full" src={image} alt={fileName} />
+            <Close
+              className="absolute z-10 top-[-12px] right-[-12px] rounded-full bg-neutral-100"
+              fontSize="medium"
+              color="error"
+              onClick={removeSelectedImage}
+            />
+          </div>
+        ) : (
+          <Stack
+            spacing={1.5}
+            alignItems="center"
+            justifyContent="center"
+            ref={fileUploadStackRef}>
+            <UploadFileOutlined
+              className="fill-purple-600"
+              color={parentDivDragClass ? "inherit" : color}
+              fontSize="large"
+            />
+            <p className={`text-[${error && "#d32f2f"}]`}>{label}</p>
+          </Stack>
+        )}
+      </div>
+      <p className="text-left">{fileName}</p>
+    </>
   );
 });

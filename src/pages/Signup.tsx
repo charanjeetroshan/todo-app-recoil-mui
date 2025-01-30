@@ -174,8 +174,7 @@ function Signup() {
             type="submit"
             variant="contained"
             color="info"
-            sx={{ padding: "0.8rem 3rem", alignSelf: "flex-start" }}
-          >
+            sx={{ padding: "0.8rem 3rem", alignSelf: "flex-start" }}>
             Sign up
           </Button>
         </Stack>
