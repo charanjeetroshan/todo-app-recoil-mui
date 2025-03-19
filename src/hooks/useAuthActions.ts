@@ -12,7 +12,7 @@ const useAuthActions = () => {
 
   async function registerUser(user: SignUpUserType) {
     let response: AxiosResponse<APIResponse> | undefined;
-    let errors: AxiosError | undefined;
+    let errors: AxiosError<APIResponse> | undefined;
 
     setIsLoading(true);
 
@@ -21,7 +21,7 @@ const useAuthActions = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
     } catch (error) {
-      errors = error as AxiosError;
+      errors = error as AxiosError<APIResponse>;
       console.log("Error while registering user: ", errors);
     } finally {
       setIsLoading(false);

@@ -14,5 +14,7 @@ export const signUpSchema = z.object({
   avatar: z
     .custom<File>()
     .transform((file) => !file)
-    .refine((file) => !file, { message: "A file must be uploaded before submitting." }),
+    .refine((file) => !file, {
+      message: "A file must be uploaded before submitting the form.",
+    }),
 });

@@ -58,7 +58,7 @@ function Signup() {
 
       setRegistrationSuccessful(true);
     } else if (errors?.isAxiosError) {
-      toast.error("The user couldn't get registered.", {
+      toast.error(errors.response?.data.message ?? "The user couldn't get registered.", {
         position: "bottom-center",
         style: { textAlign: "center", width: "380px", maxWidth: "100%" },
       });
