@@ -9,6 +9,7 @@ import { Dashboard } from "@mui/icons-material";
 import useAuthActions from "./hooks/useAuthActions";
 import SpecialRoutes from "./utils/components/SpecialRoutes";
 import { useDebouncedEffect } from "./hooks/useDebounceEffect";
+import Test from "./pages/Test";
 
 function App() {
   const { refreshAccessToken } = useAuthActions();
@@ -26,6 +27,7 @@ function App() {
           <Route element={<SpecialRoutes type="PUBLIC" />}>
             <Route path="/sign-up" element={<Signup />} />
             <Route path="/log-in" element={<Login />} />
+            <Route path="/test" element={<Test />} />
           </Route>
           <Route path="/" element={<Home />} />
         </Routes>

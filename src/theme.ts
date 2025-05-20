@@ -1,4 +1,5 @@
 import {
+  autocompleteClasses,
   createTheme,
   formLabelClasses,
   inputBaseClasses,
@@ -68,6 +69,18 @@ const theme = createTheme({
           },
           fieldset: {
             borderColor: "white",
+          },
+        }),
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          [`& .${autocompleteClasses.endAdornment}`]: {
+            color: theme.palette.info.contrastText,
+            ["& svg"]: {
+              fill: theme.palette.info.contrastText,
+            },
           },
         }),
       },
