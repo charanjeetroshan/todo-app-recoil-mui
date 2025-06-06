@@ -27,8 +27,8 @@ function App() {
           <Route element={<SpecialRoutes type="PUBLIC" />}>
             <Route path="/sign-up" element={<Signup />} />
             <Route path="/log-in" element={<Login />} />
-            <Route path="/test" element={<Test />} />
           </Route>
+          <Route path="/test" element={<Test />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </StyledContainer>

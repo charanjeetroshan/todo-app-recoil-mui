@@ -27,7 +27,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 StyledTextField.defaultProps = { variant: "outlined", color: "info", type: "text" };
 
 type FilmAutoCompleteProps = Omit<
-  MuiAutoCompleteProps<Film, false, false, false>,
+  MuiAutoCompleteProps<Film, false, false, true>,
   "options" | "renderInput"
 >;
 
@@ -41,9 +41,13 @@ export default function FilmsAutoComplete(props: FilmAutoCompleteProps) {
 
   const handleChange = (
     _: React.SyntheticEvent,
-    newFilm: Film | null,
+    newFilm: Film | string | null,
     reason: AutocompleteChangeReason
   ) => {
+    if (typeof newFilm === "string") {
+      return;
+    }
+
     setFilm(newFilm);
     props.onChange?.(_, newFilm, reason, undefined);
   };
@@ -58,7 +62,7 @@ export default function FilmsAutoComplete(props: FilmAutoCompleteProps) {
   };
 
   return (
-    <Autocomplete
+    <Autocomplete<Film, false, false, true>
       {...props}
       options={top100Films}
       renderInput={(params) => <StyledTextField {...params} label="Movie" />}
@@ -69,11 +73,11 @@ export default function FilmsAutoComplete(props: FilmAutoCompleteProps) {
       onChange={handleChange}
       inputValue={inputValue}
       onInputChange={handleInputChange}
-      noOptionsText="No items match your search"
       isOptionEqualToValue={(opt, val) => opt.id === val.id}
       popupIcon={null}
       clearIcon={null}
       clearOnBlur={false}
+      freeSolo
       openOnFocus
       autoComplete
     />
